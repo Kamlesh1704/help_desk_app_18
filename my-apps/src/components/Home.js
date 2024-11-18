@@ -179,7 +179,9 @@ export default function Home() {
   const [showPopup, setShowPopup] = useState(false);
   const [selectedTicket, setSelectedTicket] = useState(null);
   const token = localStorage.getItem('token');
-  const userDetails = JSON.parse(localStorage.getItem('user'));
+  // const userDetails = JSON.parse(localStorage.getItem('user'));
+  const userDetails = JSON.parse(localStorage.getItem('user')) || {};
+
   
   const fetchTickets = async () => {
     try {
@@ -225,17 +227,18 @@ export default function Home() {
       navigate("/login");
       return;
     }
-    
+    if (userDetails && userDetails.email) {
     if (userDetails.email === 'agent@gmail.com' || userDetails.email === 'admin@gmail.com') {
       fetchAllTickets();
     } else {
       fetchTickets();
-    }
+    }}
     
     if (userDetails.email === 'admin@gmail.com') {
       fetchCustomers();
     }
-  }, [token, userDetails.email, navigate]);
+  // }, [token, userDetails.email, navigate]);
+}, [token, userDetails?.email, navigate]);
 
   const notifyA = (msg) =>
     toast.error(msg, { position: 'top-right', autoClose: 5000, theme: 'dark' });
