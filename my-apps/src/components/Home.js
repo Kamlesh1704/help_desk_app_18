@@ -14,30 +14,7 @@ export default function Home() {
   const [selectedTicket, setSelectedTicket] = useState(null);
   const token = localStorage.getItem('token');
   const userDetails = JSON.parse(localStorage.getItem('user'));
-
-  useEffect(() => {
-    if (!token) {
-      navigate("/login");
-      return;
-    }
-    
-    if (userDetails.email === 'agent@gmail.com' || userDetails.email === 'admin@gmail.com') {
-      fetchAllTickets();
-    } else {
-      fetchTickets();
-    }
-    
-    if (userDetails.email === 'admin@gmail.com') {
-      fetchCustomers();
-    }
-  }, [token, userDetails.email, navigate]);
-
-  const notifyA = (msg) =>
-    toast.error(msg, { position: 'top-right', autoClose: 5000, theme: 'dark' });
-
-  const notifyB = (msg) =>
-    toast.success(msg, { position: 'top-right', autoClose: 5000, theme: 'dark' });
-
+  
   const fetchTickets = async () => {
     try {
       const response = await fetch('https://help-desk-app-dgat.onrender.com/user-tickets', {
@@ -75,6 +52,32 @@ export default function Home() {
     const data = await response.json();
     setTotCustomer(data.data.length - 2); // Subtracting 2 to exclude admin/customer
   };
+
+
+  useEffect(() => {
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+    
+    if (userDetails.email === 'agent@gmail.com' || userDetails.email === 'admin@gmail.com') {
+      fetchAllTickets();
+    } else {
+      fetchTickets();
+    }
+    
+    if (userDetails.email === 'admin@gmail.com') {
+      fetchCustomers();
+    }
+  }, [token, userDetails.email, navigate]);
+
+  const notifyA = (msg) =>
+    toast.error(msg, { position: 'top-right', autoClose: 5000, theme: 'dark' });
+
+  const notifyB = (msg) =>
+    toast.success(msg, { position: 'top-right', autoClose: 5000, theme: 'dark' });
+
+
 
   const onAddNote = async (id) => {
     if (!note.trim()) return notifyA('Please enter a note');
