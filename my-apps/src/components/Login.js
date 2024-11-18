@@ -53,7 +53,10 @@ function Login() {
   };
 
   return (
-    <div className="login-container">
+    <div className="login-container" style={{display: "flex", flexDirection:"column"
+    }}>
+      <p>Customer Agent Credential: Email = agent@gmail.com , <span style={{paddingLeft:"200px"}}>password = Agent@123</span></p>
+      <p>Admin Credential: Email = admin@gmail.com , <span style={{paddingLeft:"190px"}}>password = Admin@123</span></p>
       <div className="login-card">
         <h2>Login</h2>
         <form onSubmit={handleSubmit}>
