@@ -221,12 +221,13 @@ export default function Home() {
     setTotCustomer(data.data.length - 2); // Subtracting 2 to exclude admin/customer
   };
 
+ useEffect(() => {
+  if (!token) {
+    navigate("/login");
+  }
+ },[])
 
   useEffect(() => {
-    if (!token) {
-      navigate("/login");
-      return;
-    }
     if (userDetails && userDetails.email) {
     if (userDetails.email === 'agent@gmail.com' || userDetails.email === 'admin@gmail.com') {
       fetchAllTickets();
@@ -238,7 +239,7 @@ export default function Home() {
       fetchCustomers();
     }
   // }, [token, userDetails.email, navigate]);
-}, [token, userDetails?.email, navigate]);
+}, [userDetails?.email, navigate]);
 
   const notifyA = (msg) =>
     toast.error(msg, { position: 'top-right', autoClose: 5000, theme: 'dark' });
@@ -365,9 +366,9 @@ export default function Home() {
         </div>
       )}
       <div>
-        <h2>{userDetails.email.includes('agent') || userDetails.email.includes('admin') ? 'All Tickets' : 'My Tickets'}</h2>
+        <h2>{userDetails?.email?.includes('agent') || userDetails?.email?.includes('admin') ? 'All Tickets' : 'My Tickets'}</h2>
         <div className="tickets-list">
-          {renderTickets(userDetails.email.includes('agent') || userDetails.email.includes('admin') ? allTickets : tickets)}
+          {renderTickets(userDetails?.email?.includes('agent') || userDetails?.email?.includes('admin') ? allTickets : tickets)}
         </div>
       </div>
       {showPopup && selectedTicket && (
